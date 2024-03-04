@@ -4,11 +4,14 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
+    [SerializeField]
+    private ParticleSystem _particle;
+
     private Rigidbody Rb;
 
-    private float minSpeed = 14f;
-    private float maxSpeed = 18f;
-    private float maxTorque = 10f;
+    private float minSpeed = 13f;
+    private float maxSpeed = 17f;
+    private float maxTorque = 8f;
     private float xRange = 4f;
     private float ySpawnPos = -6f;
 
@@ -19,6 +22,19 @@ public class Target : MonoBehaviour
         Rb.AddForce(RandomForce(), ForceMode.Impulse);
         Rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         transform.position = RandomSpawnPos();
+    }
+
+    private void Update()
+    {
+        if (transform.position.y < ySpawnPos)
+        {
+            Destroy(gameObject);
+        }
+    }
+    private void OnMouseDown()
+    {
+        Instantiate(_particle, transform.position, _particle.transform.rotation);
+        Destroy(gameObject);
     }
 
     Vector3 RandomForce()
