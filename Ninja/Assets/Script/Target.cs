@@ -8,6 +8,7 @@ public class Target : MonoBehaviour
     private ParticleSystem _particle;
 
     private Rigidbody Rb;
+    private GameManager gameManager;
 
     private float minSpeed = 13f;
     private float maxSpeed = 17f;
@@ -15,10 +16,13 @@ public class Target : MonoBehaviour
     private float xRange = 4f;
     private float ySpawnPos = -6f;
 
-    // Start is called before the first frame update
+    [SerializeField]
+    private int points;
     void Start()
     {
         Rb = GetComponent<Rigidbody>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         Rb.AddForce(RandomForce(), ForceMode.Impulse);
         Rb.AddTorque(RandomTorque(), RandomTorque(), RandomTorque(), ForceMode.Impulse);
         transform.position = RandomSpawnPos();
@@ -34,7 +38,12 @@ public class Target : MonoBehaviour
     private void OnMouseDown()
     {
         Instantiate(_particle, transform.position, _particle.transform.rotation);
+        gameManager.scoreUpdate(points);
         Destroy(gameObject);
+        if (gameObject.CompareTag("Bad"))
+        {
+            gameManager.GameOver();
+        }
     }
 
     Vector3 RandomForce()
