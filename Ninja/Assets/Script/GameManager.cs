@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.PlayerLoop;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private TextMeshProUGUI scoreText;
+    [SerializeField]
+    private GameObject difficultyWindow;
     public GameObject gameOverText;
 
     private int score = 0;
@@ -17,9 +20,13 @@ public class GameManager : MonoBehaviour
     private float spawnRate = 1.5f;
 
     public bool isGameActive = false;
-    // Start is called before the first frame update
-    void Start()
+
+    public void StartGame(int difficulty)
     {
+        isGameActive = true;
+        score = 0;
+
+        spawnRate /= difficulty;
         StartCoroutine(SpawnTarget());
         scoreUpdate(0);
     }
@@ -43,5 +50,11 @@ public class GameManager : MonoBehaviour
     {
         isGameActive = false;
         gameOverText.gameObject.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        gameOverText.SetActive(false);
+        difficultyWindow.SetActive(true);
     }
 }
