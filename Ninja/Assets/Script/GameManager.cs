@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
         score = 0;
 
         spawnRate /= difficulty;
+        scoreText.gameObject.SetActive(true);
         StartCoroutine(SpawnTarget());
         scoreUpdate(0);
     }
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         gameOverText.SetActive(false);
+        scoreText.gameObject .SetActive(false);
         difficultyWindow.SetActive(true);
     }
 }
